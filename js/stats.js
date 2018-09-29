@@ -4,7 +4,7 @@
 
 'use strict';
 
-var CLOUD_WIDTH = 270; // Ширина облака, пкс
+var CLOUD_WIDTH = 370; // Ширина облака, пкс
 var CLOUD_HEIGHT = 270; // Высота облака, пкс
 var CLOUD_X = 150; // Отступ слева от облака, пкс
 var CLOUD_Y = 0; // Отступ сверху от облака, пкс
@@ -15,7 +15,6 @@ var BAR_WIDTH = 40; // Ширина колонки, пкс
 var BAR_HEIGHT = 130; // Высота колонки, пкс
 var TEXT_OFFSET = 20; // Отступ текста в заголовке, пкс
 var TEXT_OFFSET_STATS = 30; // Отступ текста по статистике, пкс
-var MAX_VALUE_STATS = 10000;
 var FIGURE_COLOR = '#000';
 var BACK_COLOR = '#fff';
 var FONT_STYLE = '16px PT Mono';
@@ -29,7 +28,6 @@ var STATS_TEXT_OFFSET = 70;
 // Рисуем облака
 function renderCloud(ctx, x, y, color) {
   drawCloud(ctx, x, y, color);
-  drawCloudShadow(ctx, x, y, color);
 }
 
 // Рисуем основное облако результата
@@ -38,21 +36,8 @@ function drawCloud(ctx, x, y, color) {
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT); // Заливаем облако цветом
 }
 
-// Рисуем тень
-function drawCloudShadow(ctx, x, y, color) {
-  ctx.fillStyle = color;
-  ctx.strokeRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT); // Контур вокруг облака/тени
-}
-
 // Получечние наибольшего результата в статистике
 function getMaxResult(arr) {
-  // Заглушка - если в arr - пустой массив - добавляем в него 4 рандомных результата
-  if (arr.length === 0) {
-    for (var j = 0; j < 4; j++) {
-      arr.push(Math.floor(Math.random() * MAX_VALUE_STATS));
-    }
-  }
-
   var maxResult = arr[0];
 
   for (var i = 0; i < arr.length; i++) {
@@ -67,12 +52,10 @@ function getMaxResult(arr) {
 // Сравниваем длину массивов с именами игроков и кол-вом попыток
 // Если длины массивов не равны - сравниваем по наибольшему
 function equalArrays(names, times) {
-  if (names.length !== times.length) {
-    if (names.length > times.length) {
-      times.length = names.length;
-    } else {
-      names.length = times.length;
-    }
+  if (names.length > times.length) {
+    times.length = names.length;
+  } else {
+    names.length = times.length;
   }
 }
 
